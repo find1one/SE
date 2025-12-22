@@ -1,0 +1,813 @@
+/* ===========================
+   支付交易管理系统 - 样式表
+   =========================== */
+
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1890ff;
+    --success-color: #52c41a;
+    --error-color: #f5222d;
+    --warning-color: #faad14;
+    --info-color: #13c2c2;
+    --text-color: #262626;
+    --text-secondary: #595959;
+    --border-color: #d9d9d9;
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 头部样式 */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 0;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+nav a:hover,
+nav a.active {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+/* 主内容区 */
+main {
+    min-height: calc(100vh - 250px);
+    padding-bottom: 40px;
+}
+
+/* 卡片样式 */
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* 支付方式选择 */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.payment-method {
+    cursor: pointer;
+}
+
+.payment-method input[type="radio"] {
+    display: none;
+}
+
+.method-card {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.payment-method input[type="radio"]:checked + .method-card {
+    border-color: var(--primary-color);
+    background: rgba(24, 144, 255, 0.05);
+    box-shadow: var(--shadow-hover);
+}
+
+.method-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.method-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.method-icon.alipay {
+    background: linear-gradient(135deg, #1677ff 0%, #00a6ff 100%);
+}
+
+.method-icon.wechat {
+    background: linear-gradient(135deg, #09bb07 0%, #00d100 100%);
+}
+
+.method-icon.bank {
+    background: linear-gradient(135deg, #fa541c 0%, #ff7a45 100%);
+}
+
+.method-icon.credit {
+    background: linear-gradient(135deg, #722ed1 0%, #9254de 100%);
+}
+
+.method-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.method-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 按钮样式 */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #096dd9;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+    background: #ffffff;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-large {
+    padding: 15px 40px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.form-actions .btn {
+    flex: 1;
+}
+
+/* 提示信息 */
+.alert {
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-success {
+    background: #f6ffed;
+    border: 1px solid #b7eb8f;
+    color: #389e0d;
+}
+
+.alert-error {
+    background: #fff2f0;
+    border: 1px solid #ffccc7;
+    color: #cf1322;
+}
+
+.alert-warning {
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    color: #d46b08;
+}
+
+.alert-info {
+    background: #e6fffb;
+    border: 1px solid #87e8de;
+    color: #006d75;
+}
+
+/* 信息面板 */
+.info-panel {
+    background: linear-gradient(135deg, #fff9e6 0%, #fffdf0 100%);
+    border-left: 4px solid var(--warning-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.info-panel h3 {
+    color: var(--warning-color);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.info-panel ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-panel li {
+    padding: 8px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.info-panel li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--warning-color);
+    font-weight: bold;
+}
+
+/* 支付页面样式 */
+.payment-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.payment-info,
+.payment-action {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.payment-info h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row .label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.info-row .value {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.info-row .amount {
+    font-size: 24px;
+    color: var(--error-color);
+}
+
+/* 状态标签 */
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff7e6;
+    color: #d46b08;
+}
+
+.status-processing {
+    background: #e6f7ff;
+    color: #0958d9;
+}
+
+.status-success {
+    background: #f6ffed;
+    color: #389e0d;
+}
+
+.status-failed {
+    background: #fff2f0;
+    color: #cf1322;
+}
+
+.status-timeout {
+    background: #f5f5f5;
+    color: #595959;
+}
+
+.status-cancelled {
+    background: #f5f5f5;
+    color: #8c8c8c;
+}
+
+/* 安全提示 */
+.security-notice {
+    background: #f6ffed;
+    border: 1px solid #b7eb8f;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.security-notice p {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--success-color);
+}
+
+.security-notice ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.security-notice li {
+    padding: 5px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+}
+
+.security-notice li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+/* 倒计时 */
+.payment-timeout {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.payment-timeout small {
+    color: var(--text-secondary);
+}
+
+#countdown {
+    font-weight: 600;
+    color: var(--error-color);
+}
+
+/* 支付结果样式 */
+.payment-result {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.result-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.payment-result.success .result-icon {
+    background: #f6ffed;
+    color: var(--success-color);
+}
+
+.payment-result.failed .result-icon {
+    background: #fff2f0;
+    color: var(--error-color);
+}
+
+.payment-result.timeout .result-icon {
+    background: #f5f5f5;
+    color: var(--text-secondary);
+}
+
+.payment-result h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.payment-result p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+}
+
+.result-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* 成功页面样式 */
+.success-page {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.success-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: white;
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.success-page h2 {
+    font-size: 32px;
+    color: var(--success-color);
+    margin-bottom: 10px;
+}
+
+.success-message {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* 交易详情 */
+.transaction-details {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: left;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.detail-value.highlight {
+    color: var(--error-color);
+    font-size: 20px;
+}
+
+/* 通知信息 */
+.notification-info {
+    background: #e6f7ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.notification-info p {
+    margin: 8px 0;
+    color: var(--info-color);
+    font-weight: 500;
+}
+
+/* 操作按钮 */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+/* 交易历史表格 */
+.transaction-table {
+    width: 100%;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.transaction-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transaction-table th {
+    background: #fafafa;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.transaction-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-table tr:hover {
+    background: #fafafa;
+}
+
+.transaction-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* 分页 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.pagination .active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 查询表单 */
+.query-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* 页脚样式 */
+footer {
+    background: #001529;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (min-width: 768px) {
+    .payment-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    header h1 {
+        font-size: 22px;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .payment-methods {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .transaction-table {
+        overflow-x: auto;
+    }
+
+    .transaction-table table {
+        min-width: 600px;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+    .success-page {
+        padding: 20px;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 48px;
+    }
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}

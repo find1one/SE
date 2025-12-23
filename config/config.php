@@ -10,7 +10,7 @@ return [
         'port' => 3306,
         'dbname' => 'payment_system',
         'username' => 'root',
-        'password' => '',
+        'password' => '123456',
         'charset' => 'utf8mb4'
     ],
 
@@ -69,6 +69,9 @@ return [
     'security' => [
         'ssl_enabled' => true,
         'encryption_key' => 'your-32-character-encryption-key-here',
+        'callback_secret_key' => 'your-callback-secret-key-for-signature',
+        'internal_token' => 'internal-api-token-for-service-calls',
+        'verify_callback_signature' => false, // 生产环境应设为true
         'fraud_detection' => [
             'max_amount_per_transaction' => 50000, // 单笔最大金额
             'max_transactions_per_hour' => 10, // 每小时最大交易次数
@@ -92,11 +95,28 @@ return [
 
     // 外部系统回调配置(支付完成后通知外部系统)
     'external_callback' => [
-        // 火车票订单系统回调配置
-        'train_order' => [
+        // Booking Panel订单系统回调配置
+        'booking_panel' => [
             'enabled' => true,
-            'callback_url' => 'http://127.0.0.1:8081/api/order/callback/notify',
-            'timeout' => 30
+            // 订单状态更新接口 - 支付完成后调用此接口通知Booking Panel
+            'order_update_url' => 'http://localhost:8080/api/v1/orders/update-status',
+            'timeout' => 5, // 超时时间(秒)
+            'max_retries' => 3, // 最大重试次数
+            'retry_interval' => 5 // 重试间隔(秒)
+        ]
+    ],
+
+    // API配置
+    'api' => [
+        'version' => 'v1',
+        'rate_limit' => [
+            'enabled' => true,
+            'max_requests_per_minute' => 60
+        ],
+        'timeout' => [
+            'create_payment' => 5000, // 创建支付订单超时(ms)
+            'callback' => 10000, // 回调接口超时(ms)
+            'query_status' => 3000 // 查询状态超时(ms)
         ]
     ]
 ];

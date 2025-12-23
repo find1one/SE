@@ -1,0 +1,288 @@
+[2025-12-22 12:10:45] [info] 收到创建支付请求: {"orderId":"ORD-TEST-001","userId":"USER-001","amount":99.99,"paymentMethod":"ALIPAY","subject":"测试商品"}
+[2025-12-22 12:10:45] [error] 创建支付订单异常: 数据库连接失败: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+[2025-12-22 13:37:38] [info] 收到创建支付请求: {"orderId":"ORD-TEST-001","userId":"USER-001","amount":99.99,"paymentMethod":"ALIPAY","subject":"测试商品"}
+[2025-12-22 13:37:39] [error] 创建订单失败: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`payment_system`.`transactions`, CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[2025-12-22 13:37:39] [warning] 创建支付订单失败: 创建订单失败: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`payment_system`.`transactions`, CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[2025-12-22 13:37:53] [info] 收到创建支付请求: {"orderId":"ORD-TEST-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY","subject":"测试商品"}
+[2025-12-22 13:37:53] [info] 创建支付订单: TXN20251222133753487152, 用户: 1, 金额: 99.99
+[2025-12-22 13:37:53] [info] 支付订单创建成功: paymentId=PAY-202512221337536157, orderId=ORD-TEST-001, transactionNo=TXN20251222133753487152
+[2025-12-22 13:38:03] [info] 收到创建支付请求: {"orderId":"ORD-TEST-002","userId":"1","amount":188.00,"paymentMethod":"WECHAT","subject":"微信支付测试"}
+[2025-12-22 13:38:03] [info] 创建支付订单: TXN20251222133803754783, 用户: 1, 金额: 188
+[2025-12-22 13:38:03] [info] 支付订单创建成功: paymentId=PAY-202512221338033748, orderId=ORD-TEST-002, transactionNo=TXN20251222133803754783
+[2025-12-22 13:38:03] [info] 收到创建支付请求: {"orderId":"ORD-TEST-003","userId":"1","amount":520.00,"paymentMethod":"UNIONPAY","subject":"银联支付测试"}
+[2025-12-22 13:38:03] [info] 创建支付订单: TXN20251222133803692415, 用户: 1, 金额: 520
+[2025-12-22 13:38:03] [info] 支付订单创建成功: paymentId=PAY-202512221338035263, orderId=ORD-TEST-003, transactionNo=TXN20251222133803692415
+[2025-12-22 13:38:23] [info] 查询支付状态: paymentId=PAY-202512221337536157
+[2025-12-22 13:38:23] [info] 查询支付状态成功: paymentId=PAY-202512221337536157, status=PENDING
+[2025-12-22 13:38:23] [info] 查询支付状态: paymentId=PAY-NOTEXIST-999
+[2025-12-22 13:38:43] [info] 收到支付回调: {"paymentId":"PAY-202512221337536157","status":"SUCCESS","transactionId":"TXN-ALIPAY-001","paymentTime":"2025-12-22T13:40:00+08:00","amount":99.99}
+[2025-12-22 13:38:43] [error] 支付回调处理异常: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'updated_at' in 'field list'
+[2025-12-22 13:38:43] [info] 查询支付状态: paymentId=PAY-202512221337536157
+[2025-12-22 13:38:43] [info] 查询支付状态成功: paymentId=PAY-202512221337536157, status=SUCCESS
+[2025-12-22 13:39:30] [info] 收到支付回调: {"paymentId":"PAY-202512221338033748","status":"SUCCESS","transactionId":"TXN-WECHAT-001","paymentTime":"2025-12-22T13:45:00+08:00","amount":188.00}
+[2025-12-22 13:39:30] [info] 本地支付状态已更新: transactionId=3, status=success
+[2025-12-22 13:39:30] [info] 准备调用Booking Panel订单状态更新接口: {"orderId":"ORD-TEST-002","status":"PAID","paymentId":"PAY-202512221338033748","paymentTime":"2025-12-22T13:39:30+00:00"}
+[2025-12-22 13:39:35] [error] cURL错误: Operation timed out after 5004 milliseconds with 0 bytes received
+[2025-12-22 13:39:35] [warning] 第 1 次重试调用Booking Panel...
+[2025-12-22 13:39:45] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 13:39:45] [warning] 第 2 次重试调用Booking Panel...
+[2025-12-22 13:39:55] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 13:39:55] [warning] 第 3 次重试调用Booking Panel...
+[2025-12-22 13:40:05] [error] cURL错误: Operation timed out after 5001 milliseconds with 0 bytes received
+[2025-12-22 13:40:05] [error] 调用Booking Panel失败(已重试3次): orderId=ORD-TEST-002, error=cURL错误: Operation timed out after 5001 milliseconds with 0 bytes received
+[2025-12-22 13:40:05] [error] 需要人工处理: paymentId=PAY-202512221338033748, orderId=ORD-TEST-002
+[2025-12-22 13:40:05] [info] 查询支付状态: paymentId=PAY-202512221338033748
+[2025-12-22 13:40:05] [info] 查询支付状态成功: paymentId=PAY-202512221338033748, status=SUCCESS
+[2025-12-22 13:40:28] [info] 取消支付请求: paymentId=PAY-202512221338035263, reason=用户主动取消
+[2025-12-22 13:40:28] [info] 支付已取消: paymentId=PAY-202512221338035263
+[2025-12-22 13:40:33] [warning] 第 1 次重试通知Booking Panel取消...
+[2025-12-22 13:40:43] [warning] 第 2 次重试通知Booking Panel取消...
+[2025-12-22 13:40:53] [warning] 第 3 次重试通知Booking Panel取消...
+[2025-12-22 13:41:03] [error] 通知Booking Panel取消失败: orderId=ORD-TEST-003, error=cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 13:41:04] [info] 查询支付状态: paymentId=PAY-202512221338035263
+[2025-12-22 13:41:04] [info] 查询支付状态成功: paymentId=PAY-202512221338035263, status=CANCELLED
+[2025-12-22 13:41:04] [info] 取消支付请求: paymentId=PAY-202512221337536157, reason=尝试取消已支付订单
+[2025-12-22 13:41:29] [info] 收到创建支付请求: {"orderId":"ORD-ERR-001","amount":100}
+[2025-12-22 13:41:29] [info] 收到创建支付请求: {"orderId":"ORD-ERR-002","userId":"1","amount":0,"paymentMethod":"ALIPAY"}
+[2025-12-22 13:41:30] [info] 收到创建支付请求: {"orderId":"ORD-TEST-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY","subject":"重复订单测试"}
+[2025-12-22 13:41:30] [info] 创建支付订单: TXN20251222134130132213, 用户: 1, 金额: 99.99
+[2025-12-22 13:41:30] [info] 支付订单创建成功: paymentId=PAY-202512221341308741, orderId=ORD-TEST-001, transactionNo=TXN20251222134130132213
+[2025-12-22 13:41:30] [info] 查询支付状态: paymentId=PAY-NOT-EXIST
+[2025-12-22 13:41:30] [info] 收到支付回调: {"paymentId":"PAY-NOT-EXIST","status":"SUCCESS"}
+[2025-12-22 13:41:30] [warning] 支付记录不存在: paymentId=PAY-NOT-EXIST
+[2025-12-22 13:42:09] [info] 收到创建支付请求: {"orderId":"ORD-TEST-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY","subject":"重复订单测试"}
+[2025-12-22 13:42:09] [info] 订单已存在(幂等): orderId=ORD-TEST-001, paymentId=PAY-202512221337536157
+[2025-12-22 15:35:58] [info] 查询支付状态: paymentId=test
+[2025-12-22 15:38:33] [info] 查询支付状态: paymentId=PAY-202512221337536157
+[2025-12-22 15:38:33] [info] 查询支付状态成功: paymentId=PAY-202512221337536157, status=SUCCESS
+[2025-12-22 15:45:46] [info] 查询支付状态: paymentId=test
+[2025-12-22 15:46:10] [info] 收到创建支付请求: {"orderId":"ORD-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY","subject":"测试商品"}
+[2025-12-22 15:46:10] [info] 创建支付订单: TXN20251222154610542521, 用户: 1, 金额: 99.99
+[2025-12-22 15:46:10] [info] 支付订单创建成功: paymentId=PAY-202512221546108979, orderId=ORD-001, transactionNo=TXN20251222154610542521
+[2025-12-22 15:46:10] [info] 收到创建支付请求: {"orderId":"ORD-002","userId":"1","amount":188.00,"paymentMethod":"WECHAT","subject":"微信测试"}
+[2025-12-22 15:46:10] [info] 创建支付订单: TXN20251222154610670227, 用户: 1, 金额: 188
+[2025-12-22 15:46:10] [info] 支付订单创建成功: paymentId=PAY-202512221546106091, orderId=ORD-002, transactionNo=TXN20251222154610670227
+[2025-12-22 15:46:10] [info] 收到创建支付请求: {"orderId":"ORD-003","userId":"1","amount":520.00,"paymentMethod":"UNIONPAY","subject":"银联测试"}
+[2025-12-22 15:46:10] [info] 创建支付订单: TXN20251222154610393747, 用户: 1, 金额: 520
+[2025-12-22 15:46:10] [info] 支付订单创建成功: paymentId=PAY-202512221546102321, orderId=ORD-003, transactionNo=TXN20251222154610393747
+[2025-12-22 15:46:11] [info] 查询支付状态: paymentId=PAY-202512221546108979
+[2025-12-22 15:46:11] [info] 查询支付状态成功: paymentId=PAY-202512221546108979, status=PENDING
+[2025-12-22 15:46:11] [info] 收到支付回调: {"paymentId":"PAY-202512221546108979","status":"SUCCESS","transactionId":"TXN-001"}
+[2025-12-22 15:46:11] [info] 本地支付状态已更新: transactionId=6, status=success
+[2025-12-22 15:46:11] [info] 准备调用Booking Panel订单状态更新接口: {"orderId":"ORD-001","status":"PAID","paymentId":"PAY-202512221546108979","paymentTime":"2025-12-22T15:46:11+00:00"}
+[2025-12-22 15:46:16] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 15:46:16] [warning] 第 1 次重试调用Booking Panel...
+[2025-12-22 15:46:26] [error] cURL错误: Operation timed out after 5003 milliseconds with 0 bytes received
+[2025-12-22 15:46:26] [warning] 第 2 次重试调用Booking Panel...
+[2025-12-22 15:46:36] [error] cURL错误: Operation timed out after 5005 milliseconds with 0 bytes received
+[2025-12-22 15:46:36] [warning] 第 3 次重试调用Booking Panel...
+[2025-12-22 15:46:41] [info] 查询支付状态: paymentId=PAY-202512221546108979
+[2025-12-22 15:46:41] [info] 查询支付状态成功: paymentId=PAY-202512221546108979, status=SUCCESS
+[2025-12-22 15:46:41] [info] 取消支付请求: paymentId=PAY-202512221546102321, reason=用户取消
+[2025-12-22 15:46:41] [info] 支付已取消: paymentId=PAY-202512221546102321
+[2025-12-22 15:46:46] [warning] 第 1 次重试通知Booking Panel取消...
+[2025-12-22 15:46:56] [warning] 第 2 次重试通知Booking Panel取消...
+[2025-12-22 15:47:06] [warning] 第 3 次重试通知Booking Panel取消...
+[2025-12-22 15:47:11] [info] 取消支付请求: paymentId=PAY-202512221546108979, reason=测试
+[2025-12-22 15:47:11] [info] 收到创建支付请求: {"orderId":"ORD-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY"}
+[2025-12-22 15:47:11] [info] 订单已存在(幂等): orderId=ORD-001, paymentId=PAY-202512221546108979
+[2025-12-22 15:47:11] [info] 收到创建支付请求: {"orderId":"ORD-ERR"}
+[2025-12-22 15:48:38] [info] 收到创建支付请求: {"orderId":"ORD-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY","subject":"测试商品"}
+[2025-12-22 15:48:38] [info] 创建支付订单: TXN20251222154838281941, 用户: 1, 金额: 99.99
+[2025-12-22 15:48:38] [info] 支付订单创建成功: paymentId=PAY-202512221548383489, orderId=ORD-001, transactionNo=TXN20251222154838281941
+[2025-12-22 15:48:38] [info] 收到创建支付请求: {"orderId":"ORD-002","userId":"1","amount":188.00,"paymentMethod":"WECHAT"}
+[2025-12-22 15:48:38] [info] 创建支付订单: TXN20251222154838969535, 用户: 1, 金额: 188
+[2025-12-22 15:48:38] [info] 支付订单创建成功: paymentId=PAY-202512221548387468, orderId=ORD-002, transactionNo=TXN20251222154838969535
+[2025-12-22 15:48:38] [info] 收到创建支付请求: {"orderId":"ORD-003","userId":"1","amount":520.00,"paymentMethod":"UNIONPAY"}
+[2025-12-22 15:48:38] [info] 创建支付订单: TXN20251222154838913727, 用户: 1, 金额: 520
+[2025-12-22 15:48:38] [info] 支付订单创建成功: paymentId=PAY-202512221548385282, orderId=ORD-003, transactionNo=TXN20251222154838913727
+[2025-12-22 15:48:38] [info] 查询支付状态: paymentId=PAY-202512221548383489
+[2025-12-22 15:48:38] [info] 查询支付状态成功: paymentId=PAY-202512221548383489, status=PENDING
+[2025-12-22 15:48:38] [info] 收到支付回调: {"paymentId":"PAY-202512221548383489","status":"SUCCESS","transactionId":"TXN-001"}
+[2025-12-22 15:48:38] [info] 本地支付状态已更新: transactionId=9, status=success
+[2025-12-22 15:48:38] [info] 准备调用Booking Panel订单状态更新接口: {"orderId":"ORD-001","status":"PAID","paymentId":"PAY-202512221548383489","paymentTime":"2025-12-22T15:48:38+00:00"}
+[2025-12-22 15:48:43] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 15:48:43] [warning] 第 1 次重试调用Booking Panel...
+[2025-12-22 15:48:53] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 15:48:53] [warning] 第 2 次重试调用Booking Panel...
+[2025-12-22 15:49:03] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 15:49:03] [warning] 第 3 次重试调用Booking Panel...
+[2025-12-22 15:49:09] [info] 查询支付状态: paymentId=PAY-202512221548383489
+[2025-12-22 15:49:09] [info] 查询支付状态成功: paymentId=PAY-202512221548383489, status=SUCCESS
+[2025-12-22 15:49:09] [info] 取消支付请求: paymentId=PAY-202512221548385282, reason=用户取消
+[2025-12-22 15:49:09] [info] 支付已取消: paymentId=PAY-202512221548385282
+[2025-12-22 15:49:14] [warning] 第 1 次重试通知Booking Panel取消...
+[2025-12-22 15:49:24] [warning] 第 2 次重试通知Booking Panel取消...
+[2025-12-22 15:49:34] [warning] 第 3 次重试通知Booking Panel取消...
+[2025-12-22 15:49:39] [info] 取消支付请求: paymentId=PAY-202512221548383489, reason=测试
+[2025-12-22 15:49:39] [info] 收到创建支付请求: {"orderId":"ORD-001","userId":"1","amount":99.99,"paymentMethod":"ALIPAY"}
+[2025-12-22 15:49:39] [info] 订单已存在(幂等): orderId=ORD-001, paymentId=PAY-202512221548383489
+[2025-12-22 15:49:39] [info] 收到创建支付请求: {"orderId":"ORD-ERR"}
+[2025-12-22 16:20:13] [info] 查询支付状态: paymentId=test
+[2025-12-22 16:22:50] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-001",
+        "userId": "1",
+        "amount": 99.99,
+        "paymentMethod": "ALIPAY",
+        "subject": "测试商品-支付宝支付",
+        "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+        "returnUrl": "http://localhost:3000/payment/result"
+    }
+[2025-12-22 16:22:50] [info] 创建支付订单: TXN20251222162250403687, 用户: 1, 金额: 99.99
+[2025-12-22 16:22:50] [info] 支付订单创建成功: paymentId=PAY-202512221622501367, orderId=ORD-20241222-001, transactionNo=TXN20251222162250403687
+[2025-12-22 16:22:53] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-002",
+        "userId": "1",
+        "amount": 188.00,
+        "paymentMethod": "WECHAT",
+        "subject": "测试商品-微信支付",
+        "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+        "returnUrl": "http://localhost:3000/payment/result"
+    }
+[2025-12-22 16:22:53] [info] 创建支付订单: TXN20251222162253440522, 用户: 1, 金额: 188
+[2025-12-22 16:22:53] [info] 支付订单创建成功: paymentId=PAY-202512221622534595, orderId=ORD-20241222-002, transactionNo=TXN20251222162253440522
+[2025-12-22 16:22:56] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-003",
+        "userId": "1",
+        "amount": 520.00,
+        "paymentMethod": "UNIONPAY",
+        "subject": "测试商品-银联支付",
+        "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+        "returnUrl": "http://localhost:3000/payment/result"
+    }
+[2025-12-22 16:22:56] [info] 创建支付订单: TXN20251222162256960101, 用户: 1, 金额: 520
+[2025-12-22 16:22:56] [info] 支付订单创建成功: paymentId=PAY-202512221622562589, orderId=ORD-20241222-003, transactionNo=TXN20251222162256960101
+[2025-12-22 16:22:57] [info] 查询支付状态: paymentId=PAY-202512221622501367
+[2025-12-22 16:22:57] [info] 查询支付状态成功: paymentId=PAY-202512221622501367, status=PENDING
+[2025-12-22 16:22:58] [info] 收到支付回调: {
+        "paymentId": "PAY-202512221622501367",
+        "status": "SUCCESS",
+        "transactionId": "TXN-ALIPAY-20241222-001",
+        "paymentTime": "2025-12-22T16:22:58Z",
+        "amount": 99.99,
+        "paymentMethod": "ALIPAY"
+    }
+[2025-12-22 16:22:58] [info] 本地支付状态已更新: transactionId=12, status=success
+[2025-12-22 16:22:58] [info] 准备调用Booking Panel订单状态更新接口: {"orderId":"ORD-20241222-001","status":"PAID","paymentId":"PAY-202512221622501367","paymentTime":"2025-12-22T16:22:58+00:00"}
+[2025-12-22 16:23:03] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 16:23:03] [warning] 第 1 次重试调用Booking Panel...
+[2025-12-22 16:23:13] [error] cURL错误: Operation timed out after 5001 milliseconds with 0 bytes received
+[2025-12-22 16:23:13] [warning] 第 2 次重试调用Booking Panel...
+[2025-12-22 16:23:23] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 16:23:23] [warning] 第 3 次重试调用Booking Panel...
+[2025-12-22 16:23:28] [info] 查询支付状态: paymentId=PAY-202512221622501367
+[2025-12-22 16:23:28] [info] 查询支付状态成功: paymentId=PAY-202512221622501367, status=SUCCESS
+[2025-12-22 16:23:28] [info] 取消支付请求: paymentId=PAY-202512221622501367, reason=尝试取消已支付订单
+[2025-12-22 16:23:28] [info] 取消支付请求: paymentId=PAY-202512221622562589, reason=用户主动取消支付
+[2025-12-22 16:23:28] [info] 支付已取消: paymentId=PAY-202512221622562589
+[2025-12-22 16:23:33] [warning] 第 1 次重试通知Booking Panel取消...
+[2025-12-22 16:23:43] [warning] 第 2 次重试通知Booking Panel取消...
+[2025-12-22 16:23:53] [warning] 第 3 次重试通知Booking Panel取消...
+[2025-12-22 16:23:58] [info] 查询支付状态: paymentId=PAY-202512221622562589
+[2025-12-22 16:23:58] [info] 查询支付状态成功: paymentId=PAY-202512221622562589, status=CANCELLED
+[2025-12-22 16:23:59] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-001",
+        "userId": "1",
+        "amount": 99.99,
+        "paymentMethod": "ALIPAY",
+        "subject": "测试商品-重复订单"
+    }
+[2025-12-22 16:23:59] [info] 订单已存在(幂等): orderId=ORD-20241222-001, paymentId=PAY-202512221622501367
+[2025-12-22 16:23:59] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-ERR1",
+        "amount": 100.00
+    }
+[2025-12-22 16:23:59] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-ERR2",
+        "userId": "1",
+        "amount": 0,
+        "paymentMethod": "ALIPAY",
+        "subject": "测试商品"
+    }
+[2025-12-22 16:23:59] [info] 查询支付状态: paymentId=PAY-NOTEXIST-999999
+[2025-12-22 16:23:59] [info] 收到支付回调: {
+        "paymentId": "PAY-NOTEXIST-999999",
+        "status": "SUCCESS",
+        "transactionId": "TXN-TEST-001"
+    }
+[2025-12-22 16:23:59] [warning] 支付记录不存在: paymentId=PAY-NOTEXIST-999999
+[2025-12-22 16:28:34] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-001",
+        "userId": "1",
+        "amount": 99.99,
+        "paymentMethod": "ALIPAY",
+        "subject": "测试商品-支付宝支付",
+        "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+        "returnUrl": "http://localhost:3000/payment/result"
+    }
+[2025-12-22 16:28:34] [info] 订单已存在(幂等): orderId=ORD-20241222-001, paymentId=PAY-202512221622501367
+[2025-12-22 16:28:37] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-002",
+        "userId": "1",
+        "amount": 188.00,
+        "paymentMethod": "WECHAT",
+        "subject": "测试商品-微信支付",
+        "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+        "returnUrl": "http://localhost:3000/payment/result"
+    }
+[2025-12-22 16:28:37] [info] 订单已存在(幂等): orderId=ORD-20241222-002, paymentId=PAY-202512221622534595
+[2025-12-22 16:28:39] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-003",
+        "userId": "1",
+        "amount": 520.00,
+        "paymentMethod": "UNIONPAY",
+        "subject": "测试商品-银联支付",
+        "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+        "returnUrl": "http://localhost:3000/payment/result"
+    }
+[2025-12-22 16:28:39] [info] 订单已存在(幂等): orderId=ORD-20241222-003, paymentId=PAY-202512221622562589
+[2025-12-22 16:28:40] [info] 查询支付状态: paymentId=PAY-202512221622501367
+[2025-12-22 16:28:40] [info] 查询支付状态成功: paymentId=PAY-202512221622501367, status=SUCCESS
+[2025-12-22 16:28:42] [info] 收到支付回调: {
+        "paymentId": "PAY-202512221622501367",
+        "status": "SUCCESS",
+        "transactionId": "TXN-ALIPAY-20241222-001",
+        "paymentTime": "2025-12-22T16:28:42Z",
+        "amount": 99.99,
+        "paymentMethod": "ALIPAY"
+    }
+[2025-12-22 16:28:42] [info] 本地支付状态已更新: transactionId=12, status=success
+[2025-12-22 16:28:42] [info] 准备调用Booking Panel订单状态更新接口: {"orderId":"ORD-20241222-001","status":"PAID","paymentId":"PAY-202512221622501367","paymentTime":"2025-12-22T16:28:42+00:00"}
+[2025-12-22 16:28:47] [error] cURL错误: Operation timed out after 5002 milliseconds with 0 bytes received
+[2025-12-22 16:28:47] [warning] 第 1 次重试调用Booking Panel...
+[2025-12-22 16:28:57] [error] cURL错误: Operation timed out after 5004 milliseconds with 0 bytes received
+[2025-12-22 16:28:57] [warning] 第 2 次重试调用Booking Panel...
+[2025-12-22 16:29:07] [error] cURL错误: Operation timed out after 5001 milliseconds with 0 bytes received
+[2025-12-22 16:29:07] [warning] 第 3 次重试调用Booking Panel...
+[2025-12-22 16:29:12] [info] 查询支付状态: paymentId=PAY-202512221622501367
+[2025-12-22 16:29:12] [info] 查询支付状态成功: paymentId=PAY-202512221622501367, status=SUCCESS
+[2025-12-22 16:29:12] [info] 取消支付请求: paymentId=PAY-202512221622501367, reason=尝试取消已支付订单
+[2025-12-22 16:29:12] [info] 取消支付请求: paymentId=PAY-202512221622562589, reason=用户主动取消支付
+[2025-12-22 16:29:12] [info] 查询支付状态: paymentId=PAY-202512221622562589
+[2025-12-22 16:29:12] [info] 查询支付状态成功: paymentId=PAY-202512221622562589, status=CANCELLED
+[2025-12-22 16:29:12] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-001",
+        "userId": "1",
+        "amount": 99.99,
+        "paymentMethod": "ALIPAY",
+        "subject": "测试商品-重复订单"
+    }
+[2025-12-22 16:29:12] [info] 订单已存在(幂等): orderId=ORD-20241222-001, paymentId=PAY-202512221622501367
+[2025-12-22 16:29:12] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-ERR1",
+        "amount": 100.00
+    }
+[2025-12-22 16:29:12] [info] 收到创建支付请求: {
+        "orderId": "ORD-20241222-ERR2",
+        "userId": "1",
+        "amount": 0,
+        "paymentMethod": "ALIPAY",
+        "subject": "测试商品"
+    }
+[2025-12-22 16:30:20] [info] 查询支付状态: paymentId=PAY-NOTEXIST-999999
+[2025-12-22 16:30:22] [info] 收到支付回调: {
+        "paymentId": "PAY-NOTEXIST-999999",
+        "status": "SUCCESS",
+        "transactionId": "TXN-TEST-001"
+    }
+[2025-12-22 16:30:22] [warning] 支付记录不存在: paymentId=PAY-NOTEXIST-999999

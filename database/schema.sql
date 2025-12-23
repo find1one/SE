@@ -112,18 +112,58 @@ INSERT INTO payment_methods (method_code, method_name, icon_url, display_order) 
 CREATE TABLE IF NOT EXISTS external_order_mappings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     transaction_id INT NOT NULL COMMENT '本系统交易ID',
+    payment_id VARCHAR(64) NOT NULL COMMENT '支付ID(PAY-xxx)',
     external_order_id VARCHAR(64) NOT NULL COMMENT '外部系统订单ID',
-    external_system VARCHAR(50) NOT NULL COMMENT '外部系统标识(如: train_order)',
-    callback_url VARCHAR(500) COMMENT '支付完成回调地址',
+    external_system VARCHAR(50) NOT NULL DEFAULT 'booking_panel' COMMENT '外部系统标识',
+    callback_url VARCHAR(500) COMMENT '支付完成通知地址(notifyUrl)',
+    return_url VARCHAR(500) COMMENT '支付完成跳转地址(returnUrl)',
     callback_status ENUM('pending', 'success', 'failed') DEFAULT 'pending' COMMENT '回调状态',
     callback_response TEXT COMMENT '回调响应内容',
+    callback_retry_count INT DEFAULT 0 COMMENT '回调重试次数',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,
     UNIQUE KEY uk_transaction_id (transaction_id),
+    UNIQUE KEY uk_payment_id (payment_id),
     INDEX idx_external_order_id (external_order_id),
-    INDEX idx_external_system (external_system)
+    INDEX idx_external_system (external_system),
+    INDEX idx_callback_status (callback_status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='外部订单关联表';
+
+-- 支付回调日志表 (用于记录所有回调请求，支持幂等性和审计)
+CREATE TABLE IF NOT EXISTS payment_callback_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    payment_id VARCHAR(64) NOT NULL COMMENT '支付ID',
+    callback_type ENUM('payment_notify', 'order_update', 'refund_notify') NOT NULL COMMENT '回调类型',
+    request_data TEXT COMMENT '请求数据',
+    response_data TEXT COMMENT '响应数据',
+    http_status INT COMMENT 'HTTP状态码',
+    is_success TINYINT(1) DEFAULT 0 COMMENT '是否成功',
+    error_message TEXT COMMENT '错误信息',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_payment_id (payment_id),
+    INDEX idx_callback_type (callback_type),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='支付回调日志表';
+
+-- 待处理任务队列表 (用于记录需要重试或人工处理的任务)
+CREATE TABLE IF NOT EXISTS pending_tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    task_type VARCHAR(50) NOT NULL COMMENT '任务类型',
+    payment_id VARCHAR(64) COMMENT '关联支付ID',
+    external_order_id VARCHAR(64) COMMENT '外部订单ID',
+    task_data TEXT COMMENT '任务数据(JSON)',
+    retry_count INT DEFAULT 0 COMMENT '重试次数',
+    max_retries INT DEFAULT 3 COMMENT '最大重试次数',
+    next_retry_at DATETIME COMMENT '下次重试时间',
+    status ENUM('pending', 'processing', 'success', 'failed', 'manual') DEFAULT 'pending' COMMENT '任务状态',
+    error_message TEXT COMMENT '错误信息',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_status (status),
+    INDEX idx_next_retry_at (next_retry_at),
+    INDEX idx_payment_id (payment_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='待处理任务队列表';
 
 -- 创建测试用户
 INSERT INTO users (username, email, phone, password_hash) VALUES

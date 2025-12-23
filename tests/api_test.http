@@ -1,0 +1,248 @@
+### ============================================================
+### 支付系统API测试文件
+### 使用方法: 在VS Code中安装REST Client插件，然后点击"Send Request"
+### 或者使用 IntelliJ IDEA / WebStorm 直接运行
+### ============================================================
+
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### ============================================================
+### 测试1: 创建支付订单 - 支付宝
+### ============================================================
+# @name createPaymentAlipay
+POST {{baseUrl}}/api/v1/payments/create
+Content-Type: {{contentType}}
+
+{
+    "orderId": "ORD-20241222-001",
+    "userId": "1",
+    "amount": 99.99,
+    "paymentMethod": "ALIPAY",
+    "subject": "测试商品-支付宝支付",
+    "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+    "returnUrl": "http://localhost:3000/payment/result"
+}
+
+### ============================================================
+### 测试2: 创建支付订单 - 微信支付
+### ============================================================
+# @name createPaymentWechat
+POST {{baseUrl}}/api/v1/payments/create
+Content-Type: {{contentType}}
+
+{
+    "orderId": "ORD-20241222-002",
+    "userId": "1",
+    "amount": 188.00,
+    "paymentMethod": "WECHAT",
+    "subject": "测试商品-微信支付",
+    "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+    "returnUrl": "http://localhost:3000/payment/result"
+}
+
+### ============================================================
+### 测试3: 创建支付订单 - 银联支付
+### ============================================================
+# @name createPaymentUnionpay
+POST {{baseUrl}}/api/v1/payments/create
+Content-Type: {{contentType}}
+
+{
+    "orderId": "ORD-20241222-003",
+    "userId": "1",
+    "amount": 520.00,
+    "paymentMethod": "UNIONPAY",
+    "subject": "测试商品-银联支付",
+    "notifyUrl": "http://localhost:8080/api/v1/orders/update-status",
+    "returnUrl": "http://localhost:3000/payment/result"
+}
+
+### ============================================================
+### 测试4: 创建支付订单 - 缺少必填参数(应返回错误)
+### ============================================================
+# @name createPaymentMissingParams
+POST {{baseUrl}}/api/v1/payments/create
+Content-Type: {{contentType}}
+
+{
+    "orderId": "ORD-20241222-004",
+    "amount": 100.00
+}
+
+### ============================================================
+### 测试5: 创建支付订单 - 金额为0(应返回错误)
+### ============================================================
+# @name createPaymentZeroAmount
+POST {{baseUrl}}/api/v1/payments/create
+Content-Type: {{contentType}}
+
+{
+    "orderId": "ORD-20241222-005",
+    "userId": "1",
+    "amount": 0,
+    "paymentMethod": "ALIPAY",
+    "subject": "测试商品"
+}
+
+### ============================================================
+### 测试6: 创建支付订单 - 重复订单号(幂等性测试)
+### 先执行测试1创建订单，再执行此测试
+### ============================================================
+# @name createPaymentDuplicate
+POST {{baseUrl}}/api/v1/payments/create
+Content-Type: {{contentType}}
+
+{
+    "orderId": "ORD-20241222-001",
+    "userId": "1",
+    "amount": 99.99,
+    "paymentMethod": "ALIPAY",
+    "subject": "测试商品-重复订单",
+    "notifyUrl": "http://localhost:8080/api/v1/orders/update-status"
+}
+
+### ============================================================
+### 测试7: 查询支付状态 - 使用测试1创建的paymentId
+### 请将下面的paymentId替换为实际返回的值
+### ============================================================
+# @name queryPaymentStatus
+GET {{baseUrl}}/api/v1/payments/status?paymentId=PAY-20241222120000-ABC123
+Content-Type: {{contentType}}
+
+### ============================================================
+### 测试8: 查询支付状态 - 不存在的paymentId
+### ============================================================
+# @name queryPaymentStatusNotFound
+GET {{baseUrl}}/api/v1/payments/status?paymentId=PAY-NOTEXIST-999999
+Content-Type: {{contentType}}
+
+### ============================================================
+### 测试9: 查询支付状态 - 缺少paymentId参数
+### ============================================================
+# @name queryPaymentStatusMissingId
+GET {{baseUrl}}/api/v1/payments/status
+Content-Type: {{contentType}}
+
+### ============================================================
+### 测试10: 模拟支付回调 - 支付成功
+### 请将paymentId替换为测试1返回的实际值
+### ============================================================
+# @name callbackPaymentSuccess
+POST {{baseUrl}}/api/v1/payments/callback
+Content-Type: {{contentType}}
+
+{
+    "paymentId": "PAY-20241222120000-ABC123",
+    "status": "SUCCESS",
+    "transactionId": "TXN-ALIPAY-20241222-001",
+    "paymentTime": "2024-12-22T12:30:00+08:00",
+    "amount": 99.99,
+    "paymentMethod": "ALIPAY"
+}
+
+### ============================================================
+### 测试11: 模拟支付回调 - 支付失败
+### 请将paymentId替换为测试2返回的实际值
+### ============================================================
+# @name callbackPaymentFailed
+POST {{baseUrl}}/api/v1/payments/callback
+Content-Type: {{contentType}}
+
+{
+    "paymentId": "PAY-20241222120001-DEF456",
+    "status": "FAILED",
+    "transactionId": "TXN-WECHAT-20241222-002",
+    "paymentTime": "2024-12-22T12:35:00+08:00",
+    "amount": 188.00,
+    "paymentMethod": "WECHAT",
+    "errorCode": "INSUFFICIENT_BALANCE",
+    "errorMessage": "余额不足"
+}
+
+### ============================================================
+### 测试12: 模拟支付回调 - 不存在的paymentId
+### ============================================================
+# @name callbackPaymentNotFound
+POST {{baseUrl}}/api/v1/payments/callback
+Content-Type: {{contentType}}
+
+{
+    "paymentId": "PAY-NOTEXIST-999999",
+    "status": "SUCCESS",
+    "transactionId": "TXN-TEST-001"
+}
+
+### ============================================================
+### 测试13: 取消支付 - 取消待支付订单
+### 请将paymentId替换为测试3返回的实际值(银联支付订单)
+### ============================================================
+# @name cancelPayment
+POST {{baseUrl}}/api/v1/payments/cancel
+Content-Type: {{contentType}}
+
+{
+    "paymentId": "PAY-20241222120002-GHI789",
+    "reason": "用户主动取消支付"
+}
+
+### ============================================================
+### 测试14: 取消支付 - 不存在的paymentId
+### ============================================================
+# @name cancelPaymentNotFound
+POST {{baseUrl}}/api/v1/payments/cancel
+Content-Type: {{contentType}}
+
+{
+    "paymentId": "PAY-NOTEXIST-999999",
+    "reason": "测试取消"
+}
+
+### ============================================================
+### 测试15: 取消支付 - 尝试取消已成功的订单(应返回错误)
+### 先执行测试10使订单变为成功状态，再执行此测试
+### ============================================================
+# @name cancelPaymentAlreadySuccess
+POST {{baseUrl}}/api/v1/payments/cancel
+Content-Type: {{contentType}}
+
+{
+    "paymentId": "PAY-20241222120000-ABC123",
+    "reason": "尝试取消已支付订单"
+}
+
+### ============================================================
+### 测试16: 再次查询已支付成功的订单状态
+### ============================================================
+# @name queryPaymentStatusAfterSuccess
+GET {{baseUrl}}/api/v1/payments/status?paymentId=PAY-20241222120000-ABC123
+Content-Type: {{contentType}}
+
+### ============================================================
+### 测试17: 查询已取消的订单状态
+### ============================================================
+# @name queryPaymentStatusAfterCancel
+GET {{baseUrl}}/api/v1/payments/status?paymentId=PAY-20241222120002-GHI789
+Content-Type: {{contentType}}
+
+### ============================================================
+### 完整流程测试说明:
+###
+### 推荐测试顺序(录视频):
+### 1. 测试1 - 创建支付宝订单 (记录返回的paymentId)
+### 2. 测试2 - 创建微信订单 (记录返回的paymentId)
+### 3. 测试3 - 创建银联订单 (记录返回的paymentId)
+### 4. 测试7 - 查询测试1的订单状态 (应为PENDING)
+### 5. 测试10 - 模拟测试1订单支付成功回调
+### 6. 测试16 - 再次查询测试1订单状态 (应为SUCCESS)
+### 7. 测试15 - 尝试取消已成功订单 (应返回错误)
+### 8. 测试13 - 取消测试3的银联订单
+### 9. 测试17 - 查询已取消订单状态 (应为CANCELLED)
+### 10. 测试6 - 重复创建测试1的订单 (幂等性测试)
+###
+### 错误场景测试:
+### 11. 测试4 - 缺少必填参数
+### 12. 测试5 - 金额为0
+### 13. 测试8 - 查询不存在的订单
+### 14. 测试12 - 回调不存在的订单
+### ============================================================

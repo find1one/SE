@@ -120,7 +120,7 @@ class NotificationService {
      * 记录通知
      */
     private function recordNotification(string $transactionNo, string $type, string $recipient,
-                                       string $content, string $status, string $error = null): void {
+                                       string $content, string $status, ?string $error = null): void {
         try {
             $config = require __DIR__ . '/../../config/config.php';
             $db = new Database($config['database']);
